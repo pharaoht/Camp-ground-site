@@ -1,0 +1,19 @@
+Restful routes
+there are seven of them
+
+INDEX      /dogs            GET     Display a list of all dogs
+NEW        /dogs/new        GET     Displays a form to make a new dog
+CREATE     /dogs            POST    Add new dog to DB
+SHOW       /dogs/:id        GET     Shows info about one dog
+EDIT       /dogs/:id/edit   GET     Show edit form for on dog
+UPDATE     /dogs/:id        PUT     Update one dog, then redirect
+DESTROY    /dogs/:id        DELETE  Delete one dog, then redirect
+
+
+
+
+
+
+
+Rest is a pattern for defining our routes, its a way of mapping HTTP routes
+together.
