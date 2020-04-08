@@ -17,3 +17,6 @@ DESTROY    /dogs/:id        DELETE  Delete one dog, then redirect
 
 Rest is a pattern for defining our routes, its a way of mapping HTTP routes
 together.
+
+
+npm install method-override --save
