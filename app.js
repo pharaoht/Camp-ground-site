@@ -6,7 +6,9 @@ var ejs         = require("ejs");
 var bodyParser  = require("body-parser");
 var mongoose    = require("mongoose");
 var Campground  = require("./models/campgrounds.js");
+var seedDB      = require("./seed");
 //------------------------------------------------//
+seedDB();
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended:true}));
 //-----------------------------------------------//
