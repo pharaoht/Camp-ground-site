@@ -2,6 +2,7 @@ var mongoose = require("mongoose")
 
 
 
+
 //SCHME SETUp
 var campgroundSchema = new mongoose.Schema({
   name: String,
@@ -9,7 +10,7 @@ var campgroundSchema = new mongoose.Schema({
   description: String,
   comments: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref:"Comment"
     }
   ]

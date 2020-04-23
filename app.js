@@ -5,9 +5,11 @@ var request     = require("request");
 var ejs         = require("ejs");
 var bodyParser  = require("body-parser");
 var mongoose    = require("mongoose");
+var passport    = require("passport");
 var Campground  = require("./models/campgrounds.js");
 var Comment     = require("./models/comment")
 var seedDB      = require("./seed");
+var LocalStrategy = require("passport-local");
 //------------------------------------------------//
 //---------------Connecting to MongoDb----------//
 mongoose.connect("mongodb://localhost/yelp_camp");
@@ -33,7 +35,7 @@ app.get("/campgrounds", function(req, res){
       console.log("Something went wrong")
     }
     else{
-      console.log("Success!")
+
       res.render("campgrounds/campgrounds.ejs", {campgrounds:allcampgrounds});
     }
   })
@@ -71,7 +73,7 @@ app.get("/campgrounds/:id", function(req, res){
       console.log("oops, something went wrong")
     }
     else{
-      console.log(foundCampground)
+
       //render show templates with that campgrounds
       res.render("campgrounds/show", {campground: foundCampground});
     }
@@ -86,16 +88,21 @@ app.get("/campgrounds/:id/comments/new", function(req, res){
   //find campground by id
   Campground.findById(req.params.id, function(err, campground){
     if(err){
-      console.log(err)
-    }else{
       console.log(campground)
+      console.log(err)
+
+
+    }else{
+
       res.render("comments/new", {campground: campground});
     }
   })
   res.render("comments/new");
 })
 
-app.post("/campgrounds/:id/comments", function(req,res){
+app.post("/campgrounds/:id/comments", function(req, res){
+
+
   //lookup campground using ID
   Campground.findById(req.params.id, function(err, campground){
     if(err){
@@ -106,6 +113,7 @@ app.post("/campgrounds/:id/comments", function(req,res){
         if(err){
           console.log(err);
         }else{
+          console.log(comment)
           campgrounds.comments.push(comment);
           campground.save();
           res.redirect('/campgrounds/' + campground._id);
@@ -117,7 +125,6 @@ app.post("/campgrounds/:id/comments", function(req,res){
   //connect new comment to campground
   //redirect to show page
 })
-
 
 
 
