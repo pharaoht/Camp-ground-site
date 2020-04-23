@@ -5,11 +5,13 @@ var request     = require("request");
 var ejs         = require("ejs");
 var bodyParser  = require("body-parser");
 var mongoose    = require("mongoose");
-var passport    = require("passport");
+const passport    = require("passport");
 var Campground  = require("./models/campgrounds.js");
 var Comment     = require("./models/comment")
 var seedDB      = require("./seed");
+var User        = require("./models/user")
 var LocalStrategy = require("passport-local");
+
 //------------------------------------------------//
 //---------------Connecting to MongoDb----------//
 mongoose.connect("mongodb://localhost/yelp_camp");
@@ -18,6 +20,17 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"))
 seedDB();
 //-----------------------------------------------//
+//Passport Config
+app.use(require("express-session")({
+  secret:"Captain, this is our secret code",
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser())
 
 
 //===============================================================
@@ -126,6 +139,19 @@ app.post("/campgrounds/:id/comments", function(req, res){
   //redirect to show page
 })
 
+//==========================================================
+//Auth routes
+//==========================================================
+//show register form
+app.get("/register", function(req,res){
+  res.render("register");
+})
+
+//handle sign up logic
+app.post("/register", function(req,res){
+  var newUser = new User({username: req.body.username});
+  User.register()
+})
 
 
 
