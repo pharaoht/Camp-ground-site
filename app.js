@@ -31,6 +31,10 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser())
+app.use(function(req, res, next){
+  res.locals.currentUser = req.user;
+  next();
+});
 
 
 //===============================================================
@@ -49,7 +53,7 @@ app.get("/campgrounds", function(req, res){
     }
     else{
 
-      res.render("campgrounds/campgrounds.ejs", {campgrounds:allcampgrounds});
+      res.render("campgrounds/campgrounds.ejs", {campgrounds:allcampgrounds, currentUser: req.user});
     }
   })
 
@@ -97,7 +101,7 @@ app.get("/campgrounds/:id", function(req, res){
 //===============================================================
 //Comment campgroundsroutes
 //===============================================================
-app.get("/campgrounds/:id/comments/new", function(req, res){
+app.get("/campgrounds/:id/comments/new", isLoggedIn, function(req, res){
   //find campground by id
   Campground.findById(req.params.id, function(err, campground){
     if(err){
@@ -115,9 +119,8 @@ app.get("/campgrounds/:id/comments/new", function(req, res){
 
 app.post("/campgrounds/:id/comments", function(req, res){
 
-
   //lookup campground using ID
-  Campground.findById(req.params.id, function(err, campground){
+  Campground.findById(req.params.id, isLoggedIn, function(err, campground){
     if(err){
       console.log(err)
       res.redirect("/campgrounds")
@@ -167,9 +170,26 @@ app.get("/login", function(req, res){
 })
 
 //handle login logic
-app.post("/login", function (req , res){
-  res.send("We are logging you in.. ")
+app.post("/login", passport.authenticate("local",
+{
+  successRedirect:"/campgrounds",
+  failureRedirect:"/login"
+}), function (req , res){
+
+});
+
+//logout route
+app.get("/logout", function(req , res){
+  req.logout();
+  res.redirect("/campgrounds");
 })
+
+function isLoggedIn(req, res, next){
+  if(req.isAuthenticated()){
+    return next();
+  }
+  res.redirect("/login");
+}
 
 
 

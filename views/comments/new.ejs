@@ -2,9 +2,9 @@
 
 <div class="container">
   <div class="row">
-    <h1 style="text-align: center;">Add New Comment to <%= campground.name %> </h1>
+    <h1 style="text-align: center;">Add New Comment to </h1>
     <div style="width:30%; margin: 25px auto;">
-      <form action="/campgrounds/<%= campground._id%>/comments" method="post">
+      <form action="/campgrounds/comments" method="post">
         <div class="form-group">
           <input class="form-control" type="text" name="text" placeholder="text" >
         </div>
@@ -27,3 +27,6 @@
 
 
 <%- include("../partials/footer") %>
+
+
+ <!--< campground.name %>< campground._id%> -->
