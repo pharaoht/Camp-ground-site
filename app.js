@@ -5,7 +5,8 @@ var request     = require("request");
 var ejs         = require("ejs");
 var bodyParser  = require("body-parser");
 var mongoose    = require("mongoose");
-const passport    = require("passport");
+var passport    = require("passport");
+var methodOverride  = require("method-override");
 var Campground  = require("./models/campgrounds.js");
 var Comment     = require("./models/comment")
 var seedDB      = require("./seed");
@@ -21,6 +22,7 @@ mongoose.connect("mongodb://localhost/yelp_camp");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"))
+app.use(methodOverride("_method"));
 //seedDB();
 //-----------------------------------------------//
 //Passport Config
