@@ -1,5 +1,6 @@
 var express = require("express")
 var router  = express.Router();
+var Campground = require("../models/campgrounds")
 //Homepage route
 
 
@@ -22,11 +23,14 @@ router.post("/campgrounds", function(req, res){
   var name = req.body.name;
   var image = req.body.image;
   var desc = req.body.description;
-  var newCampground = {name: name, image: image, description: desc}
+  var author = {  id: req.user._id, username: req.user.username };
+  var newCampground = {name: name, image: image, description: desc, author: author}
+  console.log(req.user)
   //Create a new campground and save to database
-  Campground.create(newCampground, function(err, newlyCreated){
+  Campground.create(newCampground, isLoggedIn, function(err, newlyCreated){
     if(err){
       console.log("Something went Wrong")
+      res.redirect("/campgrounds")
     }
     else{
       res.redirect("/campgrounds")
@@ -36,7 +40,7 @@ router.post("/campgrounds", function(req, res){
 })
 
 //New route
-router.get("/campgrounds/new", function(req, res){
+router.get("/campgrounds/new", isLoggedIn, function(req, res){
   res.render("campgrounds/new.ejs")
 })
 

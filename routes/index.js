@@ -1,7 +1,7 @@
 var express = require("express")
 var router  = express.Router();
 var passport = require("passport")
-var uUser = require("../models/user")
+var User = require("../models/user")
 
 
 
@@ -56,3 +56,5 @@ function isLoggedIn(req, res, next){
   }
   res.redirect("/login");
 }
+
+module.exports = router;
